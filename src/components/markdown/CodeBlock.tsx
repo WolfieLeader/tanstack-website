@@ -216,6 +216,16 @@ export function CodeBlock({
         }
       } catch (err) {
         console.warn('Shiki highlighting failed:', err)
+        if (!cancelled) {
+          setCodeElement(
+            <pre
+              ref={ref}
+              className="h-full p-4 bg-white dark:bg-gray-950 text-gray-800 dark:text-gray-200"
+            >
+              <code>{code || ''}</code>
+            </pre>,
+          )
+        }
       }
     })()
     return () => {
