@@ -27,6 +27,7 @@ const LANG_ALIASES: Record<string, string> = {
 // Lazy highlighter singleton
 let highlighterPromise: Promise<HighlighterGeneric<any, any>> | null = null
 let mermaidInstance: Mermaid | null = null
+let mermaidRenderCounter = 0
 const genSvgMap = new Map<string, string>()
 const failedLanguages = new Set<string>()
 
@@ -189,7 +190,8 @@ export function CodeBlock({
               let svgHtml = genSvgMap.get(trimmedCode)
               if (!svgHtml) {
                 const mermaid = await getMermaid()
-                const { svg } = await mermaid.render('foo', trimmedCode)
+                const renderId = `mermaid-${++mermaidRenderCounter}`
+                const { svg } = await mermaid.render(renderId, trimmedCode)
                 genSvgMap.set(trimmedCode, svg)
                 svgHtml = svg
               }
